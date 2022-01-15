@@ -47,3 +47,4 @@ ujson==5.1.0
 Werkzeug==2.0.2
 wrapt==1.13.3
 yapf==0.32.0
+uwsgi
