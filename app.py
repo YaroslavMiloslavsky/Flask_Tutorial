@@ -25,9 +25,9 @@ PASSOWRD = os.getenv('PASSWORD')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://{USER}:{PASSOWRD}@localhost/tutorial'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',f'mysql://{USER}:{PASSOWRD}@localhost/tutorial')
 app.config['JWT_AUTH_URL_RULE'] = '/login'
-app.secret_key = SECRET_KEY
+app.secret_key = os.environ.get('SECRET',SECRET_KEY)
 
 @app.before_first_request
 def create_tables():
