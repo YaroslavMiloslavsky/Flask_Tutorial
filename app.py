@@ -15,25 +15,27 @@ from db import db
 app = Flask(__name__)
 api = Api(app)
 
-env_path=os.path.join('../env_data', '.env')  
+env_path = os.path.join('../env_data', '.env')
 if os.path.exists(env_path):
     load_dotenv(env_path)
 else:
     print('Error loading credentials')
-USER=os.getenv('USER')
-PASSOWRD = os.getenv('PASSWORD')
+USER = os.getenv('USER')
+PASSWORD = os.getenv('PASSWORD')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',f'mysql://{USER}:{PASSOWRD}@localhost/tutorial')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', f'postgresql://{USER}:{PASSWORD}@localhost'
+                                                                       f':5432/user_stores')
 app.config['JWT_AUTH_URL_RULE'] = '/login'
-app.secret_key = os.environ.get('SECRET',SECRET_KEY)
+app.secret_key = os.environ.get('SECRET', SECRET_KEY)
+
+
+jwt = JWT(app, authenticate, identify)
 
 @app.before_first_request
 def create_tables():
     db.create_all()
-
-jwt = JWT(app, authenticate, identify)
 
 api.add_resource(Store, '/store/<string:name>')
 api.add_resource(Item, '/item/<string:name>')

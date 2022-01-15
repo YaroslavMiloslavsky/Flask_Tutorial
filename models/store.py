@@ -1,7 +1,7 @@
 from db import db
 
 class StoreModel(db.Model):
-    __tablename__ = 'store'
+    __tablename__ = 'stores'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(16))
     items = db.relationship('ItemModel', lazy='dynamic')
@@ -11,16 +11,16 @@ class StoreModel(db.Model):
 
     def json(self):
         return {
-            'name' : self.name,
-            'items' : list(map(lambda x: x.json(), self.items.all()))
+            'name': self.name,
+            'items': list(map(lambda x: x.json(), self.items.all()))
         }
 
     @classmethod
-    def find_by_name(cls,name):
+    def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
-    
+
     @classmethod
-    def find_by_id(cls,_id):
+    def find_by_id(cls, _id):
         return cls.query.filter_by(id=_id).first()
 
     def save_to_db(self):
@@ -30,4 +30,3 @@ class StoreModel(db.Model):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
-
