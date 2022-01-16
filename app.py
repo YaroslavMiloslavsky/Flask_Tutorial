@@ -25,7 +25,8 @@ PASSWORD = os.getenv('PASSWORD')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URL', f'postgresql://{USER}:{PASSWORD}@localhost'
+                                                                       f':5432/user_stores')
 app.config['JWT_AUTH_URL_RULE'] = '/login'
 app.secret_key = os.environ.get('SECRET', SECRET_KEY)
 
