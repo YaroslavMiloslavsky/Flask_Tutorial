@@ -36,6 +36,12 @@ jwt = JWTManager(app)
 def create_tables():
     db.create_all()
 
+@jwt.additional_claims_loader
+def add_claims_to_jwt(identity):
+    if identity == 1: # Later I will create config file for this
+        return {'is_admin': True}
+    return {'is_admin': False}
+
 api.add_resource(User, '/user/<int:user_id>')
 api.add_resource(Store, '/store/<string:name>')
 api.add_resource(Item, '/item/<string:name>')
