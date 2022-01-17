@@ -26,6 +26,11 @@ class UserModel(db.Model):
     def find_all(cls):
         return cls.query.all()
 
+    @classmethod
+    def find_who_is_admin(cls):
+        from app import ADMIN_NAME
+        return cls.query.filter_by(username=ADMIN_NAME).first()
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()

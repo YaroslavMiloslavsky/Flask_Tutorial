@@ -22,6 +22,7 @@ else:
 USER = os.getenv('USER')
 PASSWORD = os.getenv('PASSWORD')
 SECRET_KEY = os.getenv('SECRET_KEY')
+ADMIN_NAME = os.environ.get('ADMIN_NAME',os.getenv('ADMIN_NAME'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URL', f'postgresql://{USER}:{PASSWORD}@localhost'
@@ -38,7 +39,9 @@ def create_tables():
 
 @jwt.additional_claims_loader
 def add_claims_to_jwt(identity):
-    if identity == 1: # Later I will create config file for this
+    from models.user import UserModel
+    admin = UserModel.find_who_is_admin()
+    if identity == admin.id: 
         return {'is_admin': True}
     return {'is_admin': False}
 
