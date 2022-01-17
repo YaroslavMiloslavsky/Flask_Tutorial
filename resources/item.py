@@ -8,7 +8,7 @@ class Item(Resource):
     parser.add_argument('price',type=float, required=True, help='This field must not be blank')
     parser.add_argument('store_id',type=int, required=True, help='This field must not be blank')
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     def get(self, name):
         item = ItemModel.get_item_by_name(name)
 
